@@ -1,0 +1,157 @@
+erDiagram
+  direction TB
+
+  escola {
+    INT_UNSIGNED id_escola PK "UNSIGNED AUTO_INCREMENT"
+    VARCHAR_100 nome_escola UK "NOT NULL - RN20"
+    VARCHAR_100 nome_responsavel "NOT NULL - PR04"
+    VARCHAR_11 telefone_responsavel "NOT NULL"
+    DECIMAL_5_2 taxa_lucro_percentual "NOT NULL DEFAULT 0.00 - RF21 RN26"
+    TINYINT_1 ativo "NOT NULL DEFAULT 1 - RN22 RN21"
+    DATETIME data_cadastro "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+  }
+
+  cliente {
+    INT_UNSIGNED id_cliente PK "UNSIGNED AUTO_INCREMENT"
+    VARCHAR_100 nome_cliente "NOT NULL - PR03"
+    VARCHAR_11 telefone UK "NULL - RN19"
+    VARCHAR_255 email "NULL"
+    DATETIME data_ciencia_privacidade "NOT NULL - PR03"
+    TINYINT_1 anonimizado "NOT NULL DEFAULT 0"
+    DATETIME data_anonimizacao "NULL"
+    TINYINT_1 ativo "NOT NULL DEFAULT 1 - RN37"
+    DATETIME data_cadastro "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+  }
+
+  usuario {
+    INT_UNSIGNED id_usuario PK "UNSIGNED AUTO_INCREMENT - RN03"
+    VARCHAR_100 nome_usuario "NOT NULL"
+    VARCHAR_30 login UK "NOT NULL - RN20"
+    VARCHAR_255 senha_hash "NOT NULL"
+    VARCHAR_13 perfil "NOT NULL"
+    TINYINT_UNSIGNED tentativas_login_falhas "NOT NULL DEFAULT 0"
+    DATETIME data_bloqueio_ate "NULL"
+    DATETIME data_ultimo_acesso "NULL"
+    TINYINT_1 ativo "NOT NULL DEFAULT 1 - RN22"
+    DATETIME data_cadastro "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+  }
+
+  categoria {
+    INT_UNSIGNED id_categoria PK "UNSIGNED AUTO_INCREMENT"
+    VARCHAR_60 nome_categoria UK "NOT NULL - RN20"
+    TINYINT_1 ativo "NOT NULL DEFAULT 1 - RN38"
+    DATETIME data_cadastro "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+  }
+
+  produto {
+    INT_UNSIGNED id_produto PK "UNSIGNED AUTO_INCREMENT"
+    INT_UNSIGNED id_categoria FK "NOT NULL"
+    VARCHAR_100 nome_produto UK "NOT NULL - RN20"
+    DECIMAL_10_2 preco_atual "NOT NULL - RN24 RN23"
+    DECIMAL_10_2 preco_custo "NULL - RN24"
+    INT estoque_atual "NOT NULL DEFAULT 0 - RN31"
+    INT estoque_minimo "NOT NULL DEFAULT 0 - RN36"
+    VARCHAR_30 registro_inspecao "NULL - PR07"
+    TINYINT_1 ativo "NOT NULL DEFAULT 1 - RN07"
+    DATETIME data_cadastro "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+  }
+
+  historico_preco {
+    INT_UNSIGNED id_historico_preco PK "UNSIGNED AUTO_INCREMENT"
+    INT_UNSIGNED id_produto FK "NOT NULL"
+    INT_UNSIGNED id_usuario FK "NOT NULL"
+    DECIMAL_10_2 preco_anterior "NOT NULL"
+    DECIMAL_10_2 preco_novo "NOT NULL"
+    DATETIME data_alteracao "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+  }
+
+  pedido {
+    INT_UNSIGNED id_pedido PK "UNSIGNED AUTO_INCREMENT - RF10"
+    INT_UNSIGNED id_escola FK "NOT NULL - RN01 RN21"
+    INT_UNSIGNED id_cliente FK "NOT NULL - RN02 RN37"
+    INT_UNSIGNED id_usuario FK "NOT NULL - RN03"
+    DATETIME data_hora "NOT NULL DEFAULT CURRENT_TIMESTAMP - RN17"
+    VARCHAR_10 status_pedido "NOT NULL DEFAULT Aberto - RN39 RN13"
+    VARCHAR_10 status_pagamento "NOT NULL DEFAULT Pendente - RN10 RN13"
+    VARCHAR_10 forma_pagamento "NULL - RN11 RN12"
+    DATETIME data_pagamento "NULL - RN17"
+    DECIMAL_10_2 valor_desconto "NOT NULL DEFAULT 0.00 - RN16"
+    DECIMAL_10_2 valor_total "NOT NULL DEFAULT 0.00 - RN15"
+    DATE data_entrega "NULL - RN30 PR02"
+  }
+
+  item_pedido {
+    INT_UNSIGNED id_item_pedido PK "UNSIGNED AUTO_INCREMENT"
+    INT_UNSIGNED id_pedido FK, UK "NOT NULL"
+    INT_UNSIGNED id_produto FK, UK "NOT NULL - RN07 RN38"
+    INT quantidade "NOT NULL - RN08"
+    DECIMAL_10_2 preco_unitario_praticado "NOT NULL - RN05"
+    DECIMAL_10_2 custo_unitario_praticado "NULL - RN06 RN27"
+  }
+
+  cancelamento_pedido {
+    INT_UNSIGNED id_cancelamento_pedido PK "UNSIGNED AUTO_INCREMENT"
+    INT_UNSIGNED id_pedido FK, UK "NOT NULL - RN18"
+    INT_UNSIGNED id_usuario FK "NOT NULL"
+    DATETIME data_cancelamento "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+    VARCHAR_255 motivo_cancelamento "NOT NULL - RN18"
+    TINYINT_1 arrependimento "NOT NULL DEFAULT 0 - RN40"
+    DECIMAL_10_2 valor_estornado "NOT NULL DEFAULT 0.00 - RN18"
+    VARCHAR_10 forma_estorno "NULL"
+    DATETIME data_estorno "NULL"
+    TINYINT_1 retorno_estoque "NOT NULL DEFAULT 0 - RN33"
+  }
+
+  movimentacao_estoque {
+    INT_UNSIGNED id_movimentacao_estoque PK "UNSIGNED AUTO_INCREMENT"
+    INT_UNSIGNED id_produto FK "NOT NULL"
+    INT_UNSIGNED id_usuario FK "NOT NULL"
+    INT_UNSIGNED id_pedido FK "NULL - RN32"
+    VARCHAR_20 tipo_movimentacao "NOT NULL - RN34"
+    INT quantidade "NOT NULL - RN32"
+    INT saldo_anterior "NOT NULL"
+    INT saldo_posterior "NOT NULL - RN29"
+    DATE data_validade "NULL - PR07"
+    VARCHAR_255 motivo "NULL - RF28"
+    DATETIME data_hora "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+  }
+
+  log_auditoria {
+    INT_UNSIGNED id_log_auditoria PK "UNSIGNED AUTO_INCREMENT"
+    INT_UNSIGNED id_usuario FK "NOT NULL - RN03"
+    VARCHAR_40 tabela_afetada "NOT NULL"
+    INT_UNSIGNED id_registro_afetado "NOT NULL"
+    VARCHAR_20 operacao "NOT NULL"
+    DATETIME data_hora "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+    JSON valor_anterior "NULL"
+    JSON valor_novo "NULL"
+    BIGINT_UNSIGNED id_conexao "NOT NULL"
+  }
+
+  solicitacao_titular {
+    INT_UNSIGNED id_solicitacao_titular PK "UNSIGNED AUTO_INCREMENT"
+    INT_UNSIGNED id_cliente FK "NOT NULL"
+    INT_UNSIGNED id_usuario FK "NULL"
+    VARCHAR_20 tipo_solicitacao "NOT NULL"
+    VARCHAR_10 situacao "NOT NULL DEFAULT Aberta"
+    DATETIME data_solicitacao "NOT NULL DEFAULT CURRENT_TIMESTAMP"
+    DATETIME data_atendimento "NULL"
+    VARCHAR_255 justificativa "NULL"
+  }
+
+  escola ||--o{ pedido : "recebe (RN01)"
+  cliente ||--o{ pedido : "realiza (RN02)"
+  usuario ||--o{ pedido : "registra (RN03)"
+  pedido ||--|{ item_pedido : "contem ao menos um (RN04)"
+  produto ||--o{ item_pedido : "compoe (RN05)"
+  categoria ||--o{ produto : "agrupa (RN38)"
+  produto ||--o{ historico_preco : "registra reajuste (RN23)"
+  usuario ||--o{ historico_preco : "altera preco"
+  produto ||--o{ movimentacao_estoque : "movimenta (RN31)"
+  usuario ||--o{ movimentacao_estoque : "lanca (RN34)"
+  pedido |o--o{ movimentacao_estoque : "origina saida ou devolucao (RN32)"
+  pedido ||--o| cancelamento_pedido : "pode ter (RN18)"
+  usuario ||--o{ cancelamento_pedido : "autoriza"
+  usuario ||--o{ log_auditoria : "executa (RN03)"
+  cliente ||--o{ solicitacao_titular : "solicita (PR03)"
+  usuario |o--o{ solicitacao_titular : "atende"

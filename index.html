@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dicionário de Dados | Sistema MLG Comércio</title>
+  <meta name="description" content="Dicionário de dados com governança (DAMA-DMBOK e COBIT) do banco MySQL do Sistema MLG Comércio — Grupo 5, Banco de Dados, ADS UNICID.">
+
+  <!-- Tema salvo aplicado antes da renderização (evita piscar) -->
+  <script>
+    try { var t = localStorage.getItem('mlg-tema'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+
+  <!-- Fontes e ícones (CDNs oficiais) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Estilos do projeto (mesma pasta do index.html) -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Panzoom.js para o visualizador do DER -->
+  <script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.5.1/dist/panzoom.min.js" defer></script>
+  <!-- Lógica do dicionário (mesma pasta do index.html) -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- ============================================================ TOPBAR -->
+  <header class="topbar">
+    <button id="menu-toggle" class="icone-btn so-mobile" type="button" aria-label="Abrir menu de navegação" aria-controls="sidebar" aria-expanded="false">
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+    </button>
+    <div class="marca">
+      <span class="marca-selo" aria-hidden="true">MLG</span>
+      <div>
+        <h1>Dicionário de Dados — Sistema MLG Comércio</h1>
+        <p>MLG Comércio | Gestão de Pedidos e Fiado por Unidade Escolar</p>
+      </div>
+    </div>
+    <button id="tema-toggle" class="tema-btn" type="button" aria-pressed="false">Modo escuro</button>
+  </header>
+
+  <div class="layout">
+    <!-- ============================================================ SIDEBAR -->
+    <aside id="sidebar" class="sidebar" aria-label="Navegação do dicionário">
+      <nav>
+        <p class="nav-grupo">Projeto</p>
+        <ul class="nav-lista">
+          <li><a href="#identificacao"><i class="fa-solid fa-circle-info" aria-hidden="true"></i><span>Identificação</span></a></li>
+          <li><a href="#painel"><i class="fa-solid fa-sliders" aria-hidden="true"></i><span>Painel de controle</span></a></li>
+          <li><a href="#legenda"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i><span>Classificação LGPD</span></a></li>
+        </ul>
+        <p class="nav-grupo">Tabelas (<span id="nav-total">12</span>)</p>
+        <ul id="nav-tabelas" class="nav-lista nav-tabelas"></ul>
+      </nav>
+      <p class="sidebar-rodape">DDL v1.2 | Requisitos v1.3<br>MySQL 8.4 LTS</p>
+    </aside>
+    <div id="overlay" class="overlay" aria-hidden="true"></div>
+
+    <!-- ============================================================ MAIN -->
+    <main id="conteudo" class="main" tabindex="-1">
+
+      <!-- Identificação -->
+      <section id="identificacao" class="card">
+        <span class="secao-rotulo">Identificação do projeto de modelagem</span>
+        <h2>Sistema MLG Comércio — Banco de Dados Relacional</h2>
+        <p class="sub">UNICID — Análise e Desenvolvimento de Sistemas | Disciplina Banco de Dados | Grupo 5 | Professor orientador: Prof. Dr. Diego Carvalho</p>
+
+        <div class="ident-grid">
+          <article class="ident-bloco">
+            <h3><i class="fa-solid fa-bullseye" aria-hidden="true"></i> Escopo</h3>
+            <p>A MLG Comércio revende alimentos artesanais de Minas Gerais (queijos, requeijões, doces, mel, embutidos e bebidas) por encomenda, em São Paulo, por meio de escolas parceiras que atuam como unidades de venda. O banco de dados substitui o legado em SQLite (um banco por escola) por uma base única e centralizada que cobre cadastros de escolas, clientes, categorias e produtos com histórico de preços; pedidos com itens estruturados; fiado ("Folha"), quitação, cancelamento com estorno e entrega; controle de estoque com validade; prestação de contas, devedores, margem real e indicadores por escola; controle de acesso por perfil, auditoria e atendimento à LGPD.</p>
+          </article>
+          <article class="ident-bloco">
+            <h3><i class="fa-solid fa-database" aria-hidden="true"></i> Tecnologia</h3>
+            <ul class="lista-tec">
+              <li><b>SGBD:</b> MySQL Community Server 8.4 LTS</li>
+              <li><b>Mecanismo:</b> InnoDB (ACID, chaves estrangeiras)</li>
+              <li><b>Codificação:</b> utf8mb4 / utf8mb4_0900_ai_ci</li>
+              <li><b>Objetos:</b> 12 tabelas, 45 gatilhos, 24 visões, 30 procedimentos, 3 funções, 1 evento, 3 papéis</li>
+              <li><b>Modelo:</b> 3FN com redundâncias controladas documentadas (seção 6.3)</li>
+              <li><b>Referências:</b> DAMA-DMBOK 2, COBIT 2019 (APO14), LGPD</li>
+            </ul>
+          </article>
+        </div>
+
+        <h3 class="titulo-resp"><i class="fa-solid fa-users" aria-hidden="true"></i> Responsáveis e papéis de governança</h3>
+        <div class="tabela-wrap">
+          <table class="resp">
+            <thead>
+              <tr><th scope="col">Nome</th><th scope="col">Papel de governança</th><th scope="col">Responsabilidade</th></tr>
+            </thead>
+            <tbody>
+              <tr><td data-label="Nome">Gabriell Turuda</td><td data-label="Papel"><span class="papel papel-owner">Data Owner</span></td><td data-label="Responsabilidade">Representante do cliente MLG Comércio: aprova regras de negócio, classificação dos dados e permissões de acesso.</td></tr>
+              <tr><td data-label="Nome">Luccas Abreu Almeida de Jesus</td><td data-label="Papel"><span class="papel papel-lead">Data Steward líder</span></td><td data-label="Responsabilidade">Líder do grupo: coordenação da governança, script DDL e manutenção deste dicionário.</td></tr>
+              <tr><td data-label="Nome">Pedro Henrique de Oliveira</td><td data-label="Papel"><span class="papel papel-steward">Data Steward de negócio</span></td><td data-label="Responsabilidade">Analista de requisitos: regras de negócio, políticas legais e rastreabilidade.</td></tr>
+              <tr><td data-label="Nome">Arthur Hudson</td><td data-label="Papel"><span class="papel papel-steward">Data Steward técnico</span></td><td data-label="Responsabilidade">Qualidade técnica, testes das regras de negócio e documentação.</td></tr>
+              <tr><td data-label="Nome">Lucas de Moraes Covelo</td><td data-label="Papel"><span class="papel papel-steward">Data Steward técnico</span></td><td data-label="Responsabilidade">Qualidade técnica, testes das regras de negócio e documentação.</td></tr>
+              <tr><td data-label="Nome">Marcos Vinicius Calixto Emerenciano</td><td data-label="Papel"><span class="papel papel-steward">Data Steward técnico</span></td><td data-label="Responsabilidade">Qualidade técnica, testes das regras de negócio e documentação.</td></tr>
+              <tr><td data-label="Nome">Nathan Cauê Sanchez Martins</td><td data-label="Papel"><span class="papel papel-steward">Data Steward técnico</span></td><td data-label="Responsabilidade">Qualidade técnica, testes das regras de negócio e documentação.</td></tr>
+              <tr><td data-label="Nome">Ruan Ferreira Silva</td><td data-label="Papel"><span class="papel papel-steward">Data Steward técnico</span></td><td data-label="Responsabilidade">Qualidade técnica, testes das regras de negócio e documentação.</td></tr>
+              <tr><td data-label="Nome">Pedro Henrique Pereira da Silva</td><td data-label="Papel"><span class="papel papel-steward">Data Steward técnico</span></td><td data-label="Responsabilidade">Qualidade técnica, testes das regras de negócio e documentação.</td></tr>
+              <tr><td data-label="Nome">Pedro Henrique da Silva Alves</td><td data-label="Papel"><span class="papel papel-steward">Data Steward técnico</span></td><td data-label="Responsabilidade">Qualidade técnica, testes das regras de negócio e documentação.</td></tr>
+              <tr><td data-label="Nome">Prof. Dr. Diego Carvalho</td><td data-label="Papel"><span class="papel papel-prof">Orientador</span></td><td data-label="Responsabilidade">Revisão e avaliação acadêmica do projeto.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Painel de controle -->
+      <section id="painel" class="card painel">
+        <span class="secao-rotulo">Painel de controle</span>
+        <div class="acoes">
+          <a id="link-pdf" class="btn btn-primario" href="docs/Especificacao_Requisitos_Regras_Negocio_BD.pdf" download>
+            <i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Baixar Especificação de Requisitos (PDF)
+          </a>
+          <button id="abrir-der" class="btn btn-secundario" type="button">
+            <i class="fa-solid fa-diagram-project" aria-hidden="true"></i> Abrir DER
+          </button>
+        </div>
+
+        <label class="busca" for="busca">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input id="busca" type="search" placeholder="Pesquisar tabela ou coluna (atalho: /)" autocomplete="off" spellcheck="false">
+          <button id="busca-limpar" class="busca-limpar" type="button" aria-label="Limpar pesquisa" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        </label>
+        <p id="busca-info" class="busca-info" aria-live="polite"></p>
+
+        <div class="kpis">
+          <div class="kpi"><span id="kpi-tabelas" class="kpi-num">0</span><span class="kpi-rot">tabelas</span></div>
+          <div class="kpi"><span id="kpi-colunas" class="kpi-num">0</span><span class="kpi-rot">colunas</span></div>
+          <div class="kpi"><span id="kpi-fk" class="kpi-num">0</span><span class="kpi-rot">chaves estrangeiras</span></div>
+          <div class="kpi kpi-dp"><span id="kpi-dp" class="kpi-num">0</span><span class="kpi-rot">colunas com dado pessoal</span></div>
+          <div class="kpi kpi-dps"><span id="kpi-dps" class="kpi-num">0</span><span class="kpi-rot">colunas com dado sensível</span></div>
+        </div>
+      </section>
+
+      <!-- Legenda LGPD -->
+      <section id="legenda" class="card">
+        <span class="secao-rotulo">Classificação de privacidade (LGPD / GDPR)</span>
+        <div class="legenda-grid">
+          <div class="legenda-item"><span class="badge badge-dps">[DPS]</span><p><b>Dado pessoal sensível</b> (LGPD, art. 5º, II): origem racial, saúde, religião, biometria e afins. Nenhuma coluna do modelo pertence a esta categoria, por decisão de minimização (art. 6º, III).</p></div>
+          <div class="legenda-item"><span class="badge badge-dp">[DP]</span><p><b>Dado pessoal</b> (art. 5º, I): identifica ou permite associar uma pessoa natural — cliente, responsável pela escola ou colaborador —, inclusive chaves que ligam registros a essas pessoas.</p></div>
+          <div class="legenda-item"><span class="badge badge-na">[N/A]</span><p><b>Não aplicável:</b> dado transacional, cadastral de empresa ou de controle técnico, que sozinho não identifica pessoa natural.</p></div>
+        </div>
+        <p class="nota">Acesso (RBAC): C = criar, R = ler, U = alterar, I = inativar, "—" = negado. As permissões são aplicadas pela aplicação e pelos procedimentos (sp_exigir_perfil), conforme a matriz da seção 3.1 da especificação.</p>
+      </section>
+
+      <!-- Dicionário (gerado por script.js a partir das 12 tabelas do DDL) -->
+      <div id="dicionario"></div>
+      <div id="sem-resultados" class="card vazio" hidden>
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <p>Nenhuma tabela ou coluna corresponde à pesquisa.</p>
+      </div>
+
+      <noscript><div class="card vazio"><p>Ative o JavaScript para visualizar o dicionário de dados.</p></div></noscript>
+
+      <footer class="rodape">
+        <p>Dicionário de Dados v1.0 (05/11/2026) | Base: mlg_comercio_ddl.sql v1.2 e Especificação de Requisitos e Regras de Negócio v1.3</p>
+        <p>Grupo 5 — Banco de Dados — ADS UNICID | <span id="ano">2026</span></p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- ============================================================ MODAL DO DER -->
+  <div id="modal-der" class="modal" role="dialog" aria-modal="true" aria-labelledby="der-titulo" aria-hidden="true">
+    <div class="modal-topo">
+      <h2 id="der-titulo">Diagrama Entidade-Relacionamento — mlg_comercio</h2>
+      <span class="modal-dica">Role para zoom | arraste para mover | teclas + - 0</span>
+      <button id="der-fechar" class="icone-btn" type="button" aria-label="Fechar diagrama"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    <div id="der-viewport" class="der-viewport">
+      <img id="der-img" alt="Diagrama Entidade-Relacionamento do banco mlg_comercio com as 12 tabelas e seus relacionamentos" draggable="false">
+      <div id="der-erro" class="der-erro" hidden>
+        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+        <p>Imagem não encontrada. Salve o DER como <code>assets/der.png</code> (nome em minúsculas).</p>
+      </div>
+    </div>
+    <div class="der-controles" role="toolbar" aria-label="Controles de zoom">
+      <button id="der-menos" type="button" aria-label="Diminuir zoom"><i class="fa-solid fa-magnifying-glass-minus" aria-hidden="true"></i></button>
+      <span id="der-nivel" class="der-nivel">100%</span>
+      <button id="der-mais" type="button" aria-label="Aumentar zoom"><i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i></button>
+      <button id="der-reset" type="button" aria-label="Restaurar tamanho e posição"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i><span>Reset</span></button>
+    </div>
+  </div>
+</body>
+</html>
